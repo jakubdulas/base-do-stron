@@ -52,7 +52,7 @@ REST_FRAMEWORK = {
 
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=90),
 
     # ROTATE_REFRESH_TOKENS: True - po wygasnieciu refresh tokenu zwroci nowy dzieki czemu nie trzeba bedzie sie znowu logowac, False jezeli po wygasnieciu tokenu trzeba bedzie sie znowu zalogowac
@@ -177,3 +177,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+AUTH_USER_MODEL = 'api.Account'

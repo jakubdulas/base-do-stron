@@ -28,10 +28,10 @@ export const AuthProvider = ({ children }) => {
   let loginUser = async (e) => {
     e.preventDefault();
 
-    let username = e.target?.username?.value;
+    let email = e.target?.email?.value;
     let password = e.target?.password?.value;
 
-    if (username && password) {
+    if (email && password) {
       // wyslij dane do serwera
       let response = await fetch(`${base_url}/token/`, {
         method: "POST",
@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: username,
+          email: email,
           password: password,
         }),
       });
@@ -60,7 +60,7 @@ export const AuthProvider = ({ children }) => {
         } else {
           navigate("/home");
         }
-      } else if (!username) {
+      } else if (!email) {
         setErrorMessage("Email cant be empty");
       } else if (!password) {
         setErrorMessage("Password cant be empty");
@@ -74,14 +74,13 @@ export const AuthProvider = ({ children }) => {
   let logoutUser = () => {
     setAuthTokens(null);
     setUser(null);
-    localStorage.removeItem("authToken");
+    localStorage.removeItem("authTokens");
     navigate("/");
   };
 
   // uaktualnij token
   let updateToken = async () => {
     console.log("update token");
-
     // wyslij dane do serwera
     let response = await fetch(`${base_url}/token/refresh/`, {
       method: "POST",
@@ -124,7 +123,7 @@ export const AuthProvider = ({ children }) => {
       if (authTokens) {
         updateToken();
       }
-    }, 4 * 60 * 1000);
+    }, 9 * 60 * 1000);
 
     return () => clearInterval(interval);
   }, [authTokens, loading]);

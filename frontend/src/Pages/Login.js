@@ -38,7 +38,7 @@ export default function Login() {
             }}
           >
             <label>e-mail</label>
-            <input style={{ width: "200px" }} name="username" type="name" />
+            <input style={{ width: "200px" }} name="email" type="email" />
           </div>
           <div
             style={{
