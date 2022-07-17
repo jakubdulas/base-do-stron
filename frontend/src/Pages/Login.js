@@ -1,30 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import AuthContext from "../Context/AuthContext";
 
 export default function Login() {
-  const [formData, setFormData] = React.useState({
-    email: "",
-    password: "",
-  });
-
-  const [errorMessage, setErrorMessage] = React.useState("");
-
-  const submitForm = (e) => {
-    e.preventDefault();
-
-    const { email, password } = formData;
-
-    if (email && password) {
-      console.log("login");
-    } else if (!email) {
-      setErrorMessage("Email cant be empty");
-    } else if (!password) {
-      setErrorMessage("Password cant be empty");
-    }
-  };
-
-  React.useEffect(() => {
-    setErrorMessage("");
-  }, [formData]);
+  let { loginUser, errorMessage } = useContext(AuthContext);
 
   return (
     <div
@@ -48,7 +27,7 @@ export default function Login() {
           <span style={{ color: "red" }}>{errorMessage}</span>
         </div>
       )}
-      <form onSubmit={submitForm}>
+      <form onSubmit={loginUser}>
         <div>
           <div
             style={{
@@ -59,18 +38,7 @@ export default function Login() {
             }}
           >
             <label>e-mail</label>
-            <input
-              style={{ width: "200px" }}
-              name="email"
-              type="email"
-              value={formData.email}
-              onChange={(e) =>
-                setFormData((currState) => ({
-                  ...currState,
-                  email: e.target.value,
-                }))
-              }
-            />
+            <input style={{ width: "200px" }} name="username" type="name" />
           </div>
           <div
             style={{
@@ -81,18 +49,7 @@ export default function Login() {
             }}
           >
             <label>password</label>
-            <input
-              style={{ width: "200px" }}
-              name="password"
-              type="password"
-              value={formData.password}
-              onChange={(e) =>
-                setFormData((currState) => ({
-                  ...currState,
-                  password: e.target.value,
-                }))
-              }
-            />
+            <input style={{ width: "200px" }} name="password" type="password" />
           </div>
 
           <input

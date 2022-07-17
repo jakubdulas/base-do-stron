@@ -9,19 +9,23 @@ import Login from "./Pages/Login";
 import Welcome from "./Pages/Welcome";
 import Register from "./Pages/Register";
 
+import { AuthProvider } from "./Context/AuthContext";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <BrowserRouter>
-    <Routes>
-      <Route element={<App />}>
-        <Route path="/" element={<Welcome />} />
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
-      </Route>
-      <Route element={<AuthenticatedOnlyRoute />}>
-        <Route path="home" element={<Home />} />
-      </Route>
-    </Routes>
+    <AuthProvider>
+      <Routes>
+        <Route element={<App />}>
+          <Route path="/" element={<Welcome />} />
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route element={<AuthenticatedOnlyRoute />}>
+            <Route path="home" element={<Home />} />
+          </Route>
+        </Route>
+      </Routes>
+    </AuthProvider>
   </BrowserRouter>
 );
