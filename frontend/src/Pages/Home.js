@@ -1,9 +1,31 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
+import useAxios from "../utils/useAxios";
+import AuthContext from "../Context/AuthContext";
 
 export default function Home() {
+  const [data, setData] = useState([]);
+  let api = useAxios();
+  const { authTokens, user } = useContext(AuthContext);
+
+  const getData = async () => {
+    let response = await api.get("/home/");
+
+    if (response.status === 200) {
+      setData(response.data);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <div>
       <h1>This is home view</h1>
+      <ul>
+        {data.map((item) => {
+          return <li key={item}>{item}</li>;
+        })}
+      </ul>
     </div>
   );
 }

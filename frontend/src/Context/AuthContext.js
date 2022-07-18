@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
-import { base_url } from "../settings";
+import { base_url } from "../utils/settings";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 
@@ -8,6 +8,11 @@ const AuthContext = createContext();
 export default AuthContext;
 
 export const AuthProvider = ({ children }) => {
+  try {
+    jwt_decode(JSON.parse(localStorage.getItem("authTokens")).access);
+  } catch (er) {
+    localStorage.clear();
+  }
   let [user, setUser] = useState(() =>
     localStorage.getItem("authTokens")
       ? jwt_decode(JSON.parse(localStorage.getItem("authTokens")).access)
@@ -78,54 +83,21 @@ export const AuthProvider = ({ children }) => {
     navigate("/");
   };
 
-  // uaktualnij token
-  let updateToken = async () => {
-    console.log("update token");
-    // wyslij dane do serwera
-    let response = await fetch(`${base_url}/token/refresh/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        refresh: authTokens?.refresh,
-      }),
-    });
-
-    let data = await response.json();
-
-    if (response.status === 200) {
-      setAuthTokens(data);
-      setUser(jwt_decode(data.access));
-      localStorage.setItem("authTokens", JSON.stringify(data));
-    } else {
-      logoutUser();
-    }
-
-    if (loading) {
-      setLoading(false);
-    }
-  };
-
   let context = {
     loginUser: loginUser,
+    logoutUser: logoutUser,
+    setAuthTokens: setAuthTokens,
+    setUser: setUser,
+    authTokens: authTokens,
     errorMessage: errorMessage,
     user: user,
-    logoutUser: logoutUser,
   };
 
   useEffect(() => {
-    if (loading) {
-      updateToken();
+    if (authTokens) {
+      setUser(jwt_decode(authTokens.access));
     }
-
-    let interval = setInterval(() => {
-      if (authTokens) {
-        updateToken();
-      }
-    }, 9 * 60 * 1000);
-
-    return () => clearInterval(interval);
+    setLoading(false);
   }, [authTokens, loading]);
 
   return (

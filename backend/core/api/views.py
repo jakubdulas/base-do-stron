@@ -18,3 +18,10 @@ def getRoutes(request):
     ]
 
     return Response(routes)
+
+
+@api_view(['GET'])
+def home(request):
+    data = ['todo 1', 'todo 2']
+
+    return Response(data)
