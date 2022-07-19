@@ -10,6 +10,7 @@ import Welcome from "./Pages/Welcome";
 import Register from "./Pages/Register";
 
 import { AuthProvider } from "./Context/AuthContext";
+import Error404 from "./Pages/404";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -21,6 +22,7 @@ root.render(
           <Route path="/" element={<Welcome />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
+          <Route path="404" element={<Error404 />} />
           <Route element={<AuthenticatedOnlyRoute />}>
             <Route path="home" element={<Home />} />
           </Route>

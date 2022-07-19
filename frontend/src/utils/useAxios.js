@@ -4,9 +4,13 @@ import jwt_decode from "jwt-decode";
 import dayjs from "dayjs";
 import { useContext } from "react";
 import AuthContext from "../Context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const useAxios = () => {
-  const { authTokens, setUser, setAuthTokens } = useContext(AuthContext);
+  const { authTokens, setUser, setAuthTokens, logoutUser } =
+    useContext(AuthContext);
+
+  const navigate = useNavigate();
 
   const axiosInstance = axios.create({
     baseURL: base_url,
@@ -29,8 +33,26 @@ const useAxios = () => {
     setUser(jwt_decode(response.data.access));
 
     req.headers.Authorization = `Bearer ${response.data.access}`;
+
     return req;
   });
+
+  axiosInstance.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      if (error.response.status === 404) {
+        window.location.pathname = "/404";
+      } else if (error.response.status === 401) {
+        localStorage.clear();
+        setAuthTokens(null);
+        setUser(null);
+        axiosInstance.defaults.headers["Authorization"] = null;
+        logoutUser();
+        navigate("/");
+      }
+      return Promise.reject(error);
+    }
+  );
 
   return axiosInstance;
 };

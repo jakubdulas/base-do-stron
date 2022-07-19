@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
+import useAxios from "../utils/useAxios";
+import { useNavigate } from "react-router-dom";
+import AuthContext from "../Context/AuthContext";
 
 export default function Register() {
   const [formData, setFormData] = React.useState({
@@ -7,26 +10,8 @@ export default function Register() {
     password: "",
     password2: "",
   });
-
-  const [errorMessage, setErrorMessage] = React.useState("");
-
-  const submitForm = (e) => {
-    e.preventDefault();
-
-    const { email, username, password, password2 } = formData;
-
-    if (email && username && password === password2 && password) {
-      console.log("register");
-    } else if (!email) {
-      setErrorMessage("Email cant be empty");
-    } else if (!password) {
-      setErrorMessage("Password cant be empty");
-    } else if (!username) {
-      setErrorMessage("Username cant be empty");
-    } else if (password !== password2) {
-      setErrorMessage("Passwords must match");
-    }
-  };
+  const { registerUser, setErrorMessage, errorMessage } =
+    useContext(AuthContext);
 
   React.useEffect(() => {
     setErrorMessage("");
@@ -54,7 +39,7 @@ export default function Register() {
           <span style={{ color: "red" }}>{errorMessage}</span>
         </div>
       )}
-      <form onSubmit={submitForm}>
+      <form onSubmit={registerUser}>
         <div>
           {/* e-mail div */}
           <div

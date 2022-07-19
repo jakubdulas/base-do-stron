@@ -75,6 +75,49 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // zarejestruj uzytkownika
+  let registerUser = async (e) => {
+    e.preventDefault();
+
+    let email = e.target?.email?.value;
+    let username = e.target?.username?.value;
+    let password = e.target?.password?.value;
+    let password2 = e.target?.password2?.value;
+
+    if (!email) {
+      setErrorMessage("Email cant be empty");
+    } else if (!username) {
+      setErrorMessage("Password cant be empty");
+    } else if (!password) {
+      setErrorMessage("Password cant be empty");
+    } else if (password !== password2) {
+      setErrorMessage("Passwords must match");
+    }
+
+    if (email && password && password2 && username && password2 === password) {
+      // wyslij dane do serwera
+      let response = await fetch(`${base_url}/register/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          username: username,
+          password: password,
+          password2: password2,
+        }),
+      });
+
+      // jezeli rejestracja przebiegła pomyślnie
+      if (response.status === 201) {
+        navigate("/login");
+      }
+    } else {
+      alert("Something went wrong");
+    }
+  };
+
   // wyloguj uzytkownika
   let logoutUser = () => {
     setAuthTokens(null);
@@ -88,6 +131,8 @@ export const AuthProvider = ({ children }) => {
     logoutUser: logoutUser,
     setAuthTokens: setAuthTokens,
     setUser: setUser,
+    registerUser: registerUser,
+    setErrorMessage: setErrorMessage,
     authTokens: authTokens,
     errorMessage: errorMessage,
     user: user,

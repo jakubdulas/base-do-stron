@@ -5,7 +5,6 @@ import AuthContext from "../Context/AuthContext";
 export default function Home() {
   const [data, setData] = useState([]);
   let api = useAxios();
-  const { authTokens, user } = useContext(AuthContext);
 
   const getData = async () => {
     let response = await api.get("/home/");
