@@ -5,9 +5,8 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+
 # custom JWT
-
-
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):

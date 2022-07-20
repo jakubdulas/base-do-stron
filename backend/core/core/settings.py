@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+from pickle import TRUE
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'auth_api',
     'api',
     'rest_framework',
     # wymaga instalacji zeby uzywac BLACKLIST_AFTER_ROTATION
@@ -52,7 +54,7 @@ REST_FRAMEWORK = {
 
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=7),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=14),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=90),
 
     # ROTATE_REFRESH_TOKENS: True - po wygasnieciu refresh tokenu zwroci nowy dzieki czemu nie trzeba bedzie sie znowu logowac, False jezeli po wygasnieciu tokenu trzeba bedzie sie znowu zalogowac
@@ -178,4 +180,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-AUTH_USER_MODEL = 'api.Account'
+AUTH_USER_MODEL = 'auth_api.Account'

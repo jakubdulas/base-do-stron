@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import AuthContext from "../Context/AuthContext";
+import AuthContext from "../../Context/AuthContext";
 
 export default function Login() {
   let { loginUser, errorMessage } = useContext(AuthContext);

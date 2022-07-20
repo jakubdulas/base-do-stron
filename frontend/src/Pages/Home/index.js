@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
-import useAxios from "../utils/useAxios";
-import AuthContext from "../Context/AuthContext";
+import useAxios from "../../utils/useAxios";
 
 export default function Home() {
   const [data, setData] = useState([]);
   let api = useAxios();
 
   const getData = async () => {
-    let response = await api.get("/home/");
+    let response = await api.get("api/home/");
 
     if (response.status === 200) {
       setData(response.data);

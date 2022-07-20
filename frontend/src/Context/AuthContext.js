@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect } from "react";
 import { base_url } from "../utils/settings";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import useAxios from "../utils/useAxios";
 
 const AuthContext = createContext();
 
@@ -38,7 +39,7 @@ export const AuthProvider = ({ children }) => {
 
     if (email && password) {
       // wyslij dane do serwera
-      let response = await fetch(`${base_url}/token/`, {
+      let response = await fetch(`${base_url}auth/token/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -96,7 +97,7 @@ export const AuthProvider = ({ children }) => {
 
     if (email && password && password2 && username && password2 === password) {
       // wyslij dane do serwera
-      let response = await fetch(`${base_url}/register/`, {
+      let response = await fetch(`${base_url}auth/register/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -119,11 +120,24 @@ export const AuthProvider = ({ children }) => {
   };
 
   // wyloguj uzytkownika
-  let logoutUser = () => {
-    setAuthTokens(null);
-    setUser(null);
-    localStorage.removeItem("authTokens");
-    navigate("/");
+  let logoutUser = async () => {
+    let response = await fetch(`${base_url}auth/logout/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authTokens.access}`,
+      },
+      body: JSON.stringify({
+        refresh_token: authTokens.refresh,
+      }),
+    });
+
+    if (response.status === 205) {
+      setAuthTokens(null);
+      setUser(null);
+      localStorage.removeItem("authTokens");
+      navigate("/");
+    }
   };
 
   let context = {

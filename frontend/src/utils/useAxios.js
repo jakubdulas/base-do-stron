@@ -23,7 +23,7 @@ const useAxios = () => {
 
     if (!isExpired) return req;
 
-    const response = await axios.post(`${base_url}/api/token/refresh/`, {
+    const response = await axios.post(`${base_url}auth/token/refresh/`, {
       refresh: authTokens.refresh,
     });
 
@@ -43,11 +43,8 @@ const useAxios = () => {
       if (error.response.status === 404) {
         window.location.pathname = "/404";
       } else if (error.response.status === 401) {
-        localStorage.clear();
-        setAuthTokens(null);
-        setUser(null);
-        axiosInstance.defaults.headers["Authorization"] = null;
         logoutUser();
+        //axiosInstance.defaults.headers["Authorization"] = null;
         navigate("/");
       }
       return Promise.reject(error);

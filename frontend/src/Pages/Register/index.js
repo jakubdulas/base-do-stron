@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-import useAxios from "../utils/useAxios";
+import useAxios from "../../utils/useAxios";
 import { useNavigate } from "react-router-dom";
-import AuthContext from "../Context/AuthContext";
+import AuthContext from "../../Context/AuthContext";
 
 export default function Register() {
   const [formData, setFormData] = React.useState({
